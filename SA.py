@@ -17,7 +17,7 @@ def roulette_construction(states):
         for state in states:
             ratio_sum += state['sum_dist']/total_sum
             roulette.append({'ratio': ratio_sum, 'state': state})
-    
+
     return roulette
 
 
@@ -62,7 +62,7 @@ def closest_cluster(item, states):
 
 
 def exchange_neighbor(states, size_neighborhood):
-    # choose two bad clusters by roulette, take an faraway item from one and put it in the other
+    # choose one bad clusters by roulette, take an faraway item from one and put it in another
     if len(states) <= 1:
         return states
 
