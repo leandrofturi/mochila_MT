@@ -21,7 +21,7 @@ iris = [{'id': x, 'coord': y} for x, y in zip(range(len(iris)), iris)]
 k_I = [3, 7, 10, 13, 22]
 
 wine = load_wine()['data']
-wine = [{'id': x, 'coord': y} for x, y in zip(range(len(iris)), wine)]
+wine = [{'id': x, 'coord': y} for x, y in zip(range(len(wine)), wine)]
 k_W = [2, 6, 9, 11, 33]
 
 
@@ -87,22 +87,24 @@ def final(configs, I, W, Z_score_I, Z_score_W, rank_I, rank_W, metodo):
     configs['std'] = df_mean.std(axis=1)
     configs['rank'] = df_rank.mean(axis=1)
 
+    df_rank = configs.join(df_rank)
+
     # Obter melhor configuração por média e por ranqueamento médio do método
     best_mean = configs.iloc[np.argmin(configs['mean'])]
     best_rank = configs.iloc[np.argmin(configs['rank'])]
+    best = pd.DataFrame({'mean': best_mean, 'rank': best_rank}).T
 
     # Obter as 5 melhores resultados de médias padronizadas e os tempos correspondentes das configurações de cada método
     idx = np.argpartition(df_Z_score.values.flatten(), range(5))[:5]
     nrow = len(df_Z_score.index)
     top_5_mean = [[configs.iloc[:,:-3].iloc[int(c/nrow)].values, df_Z_score.values.flatten()[c], df_time.values.flatten()[c]] for c in idx]
-
+    top_5_mean = pd.DataFrame([i[0].tolist() + i[1:] for i in top_5_mean])
     # Obter ranqueamento obtido por cada configuração de método em cada problema e seu ranqueamento médio
-    rank_all = stats.rankdata(df_mean.values.flatten())
-    rank_all_mean = rank_all.mean()
+    rank_all = stats.rankdata(df_mean.values.flatten()).mean()
 
     # Salvar estado
     with open(metodo+'.pkl', 'wb') as f:
-        pickle.dump([config, best_mean, best_rank, top_5_mean, rank_all, rank_all_mean, df_mean, df_time, df_rank, df_Z_score], f)
+        pickle.dump([configs, best, top_5_mean, rank_all, df_mean, df_time, df_rank, df_Z_score], f)
 
 
 
@@ -216,5 +218,7 @@ final(configs, I, W, Z_score_I, Z_score_W, rank_I, rank_W, 'AG')
 
 # Getting back the objects ###############################################################################################
 import pickle
+
+metodo='SA'
 with open(metodo+'.pkl', 'rb') as f:
-    config, best_mean, best_rank, top_5_mean, rank_all, rank_all_mean, df_mean, df_time, df_rank, df_Z_score = pickle.load(f)
+    configs, best, top_5_mean, rank_all_mean, df_mean, df_time, df_rank, df_Z_score = pickle.load(f)

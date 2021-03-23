@@ -71,13 +71,13 @@ def offspring(population, n):
 def genetic(itens, k, pop_size, iter_max, cross_ratio, mut_ratio, max_time):
     n_tournament = 3
     half_pop = pop_size//2
-    start = time.process_time()
     pop = initial_population(pop_size, itens, k)
     best_solution = pop
     best_value = evaluate_population(pop)
     iter = 0    
     end = 0
-
+    start = time.process_time()
+    
     while True:
         new_pop = pop.copy()
         for _ in range(half_pop): # everyone can cross
@@ -111,5 +111,6 @@ def genetic(itens, k, pop_size, iter_max, cross_ratio, mut_ratio, max_time):
     #print("Objective function = %.4f" % objective_function(best_individual))
     #print("Elapsed time = %.4f" % (end-start))
     #[print(', '.join(sorted([str(t['id']) for t in s['itens']]))) for s in best_individual]
-    return objective_function(best_individual), end-start
+    return [s['itens'] for s in best_individual]
+    #return objective_function(best_individual), end-start
 

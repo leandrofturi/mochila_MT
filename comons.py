@@ -42,3 +42,15 @@ def random_state(states):
 
     index = np.random.randint(0, n)
     return states[index]
+
+
+def make_target(solution):
+    K = len(solution)
+    N = sum([len(s) for s in solution])
+    target = [-1]*N
+
+    for k in range(K):
+        for i in [s['id'] for s in solution[k]]:
+            target[i] = k
+
+    return target
