@@ -101,31 +101,3 @@ for k in k_H:
     df = pd.DataFrame({k: v.tolist() + [z, r] for (k, v), z, r in zip(H[k].items(), stats.zscore(tmp), stats.rankdata(tmp))})
     df.index = ["mean", "time", "zscore", "rank"]
     H[k]['df'] = df
-
-
-
-iris = load_iris()
-X = iris.data[:, :2]
-y = iris.target
-KMEANS = KMeans(n_clusters=3).fit(X).labels_
-
-iris = [{'id': x, 'coord': y} for x, y in zip(range(len(X)), X)]
-max_time = 2
-SA = make_target(simulated_annealing(iris, 3, 100, 0.85, 7, 350, max_time))
-GRASP = make_target(grasp(iris, 3, 200, 5, max_time))
-AG = make_target(genetic(iris, 3, 50, 100, 0.75, 0.2, max_time))
-
-
-# Plot the identified clusters and compare with the answers
-fig, axes = plt.subplots(1, 2, figsize=(16,8))
-axes[0].scatter(X[:, 0], X[:, 1], c=y, cmap='gist_rainbow', edgecolor='k', s=150)
-axes[1].scatter(X[:, 0], X[:, 1], c=KMEANS, cmap='gist_rainbow', edgecolor='k', s=150)
-axes[0].set_xlabel('Sepal length', fontsize=18)
-axes[0].set_ylabel('Sepal width', fontsize=18)
-axes[1].set_xlabel('Sepal length', fontsize=18)
-axes[1].set_ylabel('Sepal width', fontsize=18)
-axes[0].tick_params(direction='in', length=10, width=5, colors='k', labelsize=20)
-axes[1].tick_params(direction='in', length=10, width=5, colors='k', labelsize=20)
-axes[0].set_title('Actual', fontsize=18)
-axes[1].set_title('Predicted', fontsize=18)
-plt.savefig("KMEANS.png")

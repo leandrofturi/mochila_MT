@@ -133,5 +133,5 @@ def simulated_annealing(itens, k, t, alfa, size_neighborhood, iter_max, max_time
     #print("Objective function = %.4f" % best_value)
     #print("Elapsed time = %.4f" % (end-start))
     #[print(', '.join(sorted([str(t['id']) for t in s]))) for s in best_solution]
-    return best_solution
-    #return best_value, end-start
+    #return best_solution
+    return best_value, end-start

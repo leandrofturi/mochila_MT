@@ -217,8 +217,8 @@ final(configs, I, W, Z_score_I, Z_score_W, rank_I, rank_W, 'AG')
 
 
 # Getting back the objects ###############################################################################################
-import pickle
+#import pickle
 
-metodo='SA'
-with open(metodo+'.pkl', 'rb') as f:
-    configs, best, top_5_mean, rank_all_mean, df_mean, df_time, df_rank, df_Z_score = pickle.load(f)
+#metodo='SA'
+#with open(metodo+'.pkl', 'rb') as f:
+#    configs, best, top_5_mean, rank_all_mean, df_mean, df_time, df_rank, df_Z_score = pickle.load(f)
